@@ -72,17 +72,17 @@ class Class {
   }
 }
 
-app.get("/trainers", (reauest, response) => {
+app.get("/trainers", (request, response) => {
   response.json(trainers);
 });
 
 app.post("/trainers", (request, response) => {
   const { id, name, specialization, email } = request.body;
-  if ((!id, !name || !specialization || !email)) {
+  if ((!id || !name || !specialization || !email)) {
     return response.status(400).json({ error: "пропущенны обязательные поля" });
   }
 
-  const trainer = new Trainer(name, specialization, email);
+  const trainer = new Trainer(id, name, specialization, email);
   trainers.push(trainer);
   response.status(201).json(trainer);
 });
@@ -93,7 +93,7 @@ app.get("/clients", (request, response) => {
 
 app.post("/clients", (request, response) => {
   const { id, name, age, membershipType } = request.body;
-  if ((!id, !name || !age || !membershipType)) {
+  if ((!id || !name || !age || !membershipType)) {
     return response.status(400).json({ error: "пропущенны обязательные поля" });
   }
 
@@ -107,8 +107,8 @@ app.get("/classes", (request, response) => {
 });
 
 app.post("/classes", (request, response) => {
-  const { trainerId, title, dateTime, capacity } = request.body;
-  if (!trainerId || !title || !dateTime || !capacity) {
+  const { id, trainerId, title, dateTime, capacity } = request.body;
+  if ( !id || !trainerId || !title || !dateTime || !capacity) {
     return response.status(400).json({ error: "пропустили обязательные поля" });
   }
 
@@ -116,7 +116,7 @@ app.post("/classes", (request, response) => {
   if (!trainer)
     return response.status(404).json({ error: "Джим мастер не найден" });
 
-  const newClass = new Class(trainerId, title, dateTime, capacity);
+  const newClass = new Class( id, trainerId, title, dateTime, capacity);
   classes.push(newClass);
   response.status(201).json(newClass);
 });
